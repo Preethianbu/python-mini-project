@@ -1,314 +1,144 @@
-Python 3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license()" for more information.
+import random
 
-===================== RESTART: C:/Users/Welcome/hangman.py =====================
-Welcome to 'Hangman', are you ready to play?
-(1) Yes, let's play!
-(2) No, get me outta here!
--> 1
-I'm sorry, I didn't understand that.
-Welcome to 'Hangman', are you ready to play?
-(1) Yes, let's play!
-(2) No, get me outta here!
--> yes
-Loading hangman...
-A crowd begins to gather, they can't wait to see some real justice.
-There's just one thing, you aren't a real criminal.
-No, no. You're the wrong time, wrong place type. You may think
-you're doomed, but it's not like that at all.
-Yes, yes. You've got a chance to live. All you've gotta do
-is guess the right word and you can live to see another day.
-But don't get too happy yet. If you make 6 wrong guesses,
-YOU'RE TOAST! VAMANOS!
-Guess a letter -> i
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
+class Hangman:
+    def __init__(self):
+        print("Welcome to 'Hangman', are you ready to play?")
+        print("(1) Yes, let's play!\n(2) No, get me outta here!")
+        user_choice_1 = input("-> ")
 
+        if user_choice_1 == 'yes':
+            print("Loading hangman...")
+            self.start_game()
+        elif user_choice_1 == 'no':
+            print("Bye bye now...")
+            exit()
+        else:
+            print("I'm sorry, I didn't understand that.")
+            self.__init__()
+
+    def start_game(self):
+        print("A crowd begins to gather, they can't wait to see some real justice.")
+        print("There's just one thing, you aren't a real criminal.")
+        print("No, no. You're the wrong time, wrong place type. You may think")
+        print("you're doomed, but it's not like that at all.")
+        print("Yes, yes. You've got a chance to live. All you've gotta do")
+        print("is guess the right word and you can live to see another day.")
+        print("But don't get too happy yet. If you make 6 wrong guesses,")
+        print("YOU'RE TOAST! VAMANOS!")
+        print("What is the data type in Python? ")
+        self.core_game()
+
+    def core_game(self):
+        guesses = 0
+        letters_used = ""
+        words = ['integer', 'dictionary', 'boolean', 'string', 'float', 'tuple']
+        the_word = random.choice(words)
+        progress = ["?"] * len(the_word)
+
+        while guesses < 6:
+            guess = input("Guess a letter -> ")
+
+            if guess in letters_used:
+                print("You've already guessed that letter. Try again!")
+                continue
+
+            if guess in the_word:
+                print("As it turns out, your guess was RIGHT!")
+                letters_used += guess
+                self.hangman_graphic(guesses)
+                progress = self.progress_updater(guess, the_word, progress)
+                print("Progress: " + "".join(progress))
+                print("Letters used: " + letters_used)
+                if "".join(progress) == the_word:
+                    print("Congratulations, you won! You've guessed the word correctly.")
+                    self.play_again()
+                    return
+            else:
+                guesses += 1
+                print("Things aren't looking so good, that guess was WRONG!")
+                print("Oh man, that crowd is getting happy, I thought you")
+                print("wanted to make them mad?")
+                letters_used += guess
+                self.hangman_graphic(guesses)
+                print("Progress: " + "".join(progress))
+                print("Letters used: " + letters_used)
+
+        print("GAME OVER! The word was:", the_word)
+        self.play_again()
+
+    def hangman_graphic(self, guesses):
+        stages = [
+            """
                --------
                |      |
                |      O
-               |     \|/
+               |     \\|/
+               |      |
+               |     / \\
+            """,
+            """
+               --------
+               |      |
+               |      O
+               |     \\|/
                |      |
                |     /
-            
-Progress: ??????
-Letters used: i
-Guess a letter -> a
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
+            """,
+            """
                --------
                |      |
                |      O
-               |     \|/
+               |     \\|/
                |      |
                |
-            
-Progress: ??????
-Letters used: ia
-Guess a letter -> r
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
+            """,
+            """
                --------
                |      |
                |      O
-               |     \|
+               |     \\|
                |      |
                |
-            
-Progress: ??????
-Letters used: iar
-Guess a letter -> e
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
+            """,
+            """
                --------
                |      |
                |      O
                |      |
                |      |
                |
-            
-Progress: ??????
-Letters used: iare
-Guess a letter -> p
-As it turns out, your guess was RIGHT!
-
+            """,
+            """
                --------
                |      |
                |      O
-               |      |
+               |
+               |
+               |
+            """,
+            """
+               --------
                |      |
                |
-            
-Progress: p?????
-Letters used: iarep
-Guess a letter -> y
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
                |
-            
-Progress: py????
-Letters used: iarepy
-Guess a letter -> t
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
                |
-            
-Progress: pyt???
-Letters used: iarepyt
-Guess a letter -> h
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
                |
-            
-Progress: pyth??
-Letters used: iarepyth
-Guess a letter -> o
-As it turns out, your guess was RIGHT!
+            """
+        ]
+        print(stages[guesses])
 
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: pytho?
-Letters used: iarepytho
-Guess a letter -> n
-As it turns out, your guess was RIGHT!
+    def progress_updater(self, guess, the_word, progress):
+        for i, char in enumerate(the_word):
+            if guess == char:
+                progress[i] = guess
+        return progress
 
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: python
-Letters used: iarepython
-Congratulations! You've guessed the word correctly.
-Would you like to play again? (yes/no): 
-=============================================================== RESTART: C:/Users/Welcome/hangman.py ==============================================================
-Welcome to 'Hangman', are you ready to play?
-(1) Yes, let's play!
-(2) No, get me outta here!
--> yes
-Loading hangman...
-A crowd begins to gather, they can't wait to see some real justice.
-There's just one thing, you aren't a real criminal.
-No, no. You're the wrong time, wrong place type. You may think
-you're doomed, but it's not like that at all.
-Yes, yes. You've got a chance to live. All you've gotta do
-is guess the right word and you can live to see another day.
-But don't get too happy yet. If you make 6 wrong guesses,
-YOU'RE TOAST! VAMANOS!
-What is a widely-used general-purpose, object-oriented, high-level programming language? 
-Guess a letter -> p
-As it turns out, your guess was RIGHT!
+    def play_again(self):
+        choice = input("Would you like to play again? (yes/no): ").lower()
+        if choice == 'yes':
+            self.__init__()
+        else:
+            print("Goodbye!")
 
-               --------
-               |      |
-               |      O
-               |     \|/
-               |      |
-               |     / \
-            
-Progress: p????
-Letters used: p
-Guess a letter -> 
-=============================================================== RESTART: C:/Users/Welcome/hangman.py ==============================================================
-Welcome to 'Hangman', are you ready to play?
-(1) Yes, let's play!
-(2) No, get me outta here!
--> yes
-Loading hangman...
-A crowd begins to gather, they can't wait to see some real justice.
-There's just one thing, you aren't a real criminal.
-No, no. You're the wrong time, wrong place type. You may think
-you're doomed, but it's not like that at all.
-Yes, yes. You've got a chance to live. All you've gotta do
-is guess the right word and you can live to see another day.
-But don't get too happy yet. If you make 6 wrong guesses,
-YOU'RE TOAST! VAMANOS!
-What is the data type in Python? 
-Guess a letter -> s
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
 
-               --------
-               |      |
-               |      O
-               |     \|/
-               |      |
-               |     /
-            
-Progress: ?????
-Letters used: s
-Guess a letter -> f
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
-               --------
-               |      |
-               |      O
-               |     \|/
-               |      |
-               |
-            
-Progress: ?????
-Letters used: sf
-Guess a letter -> i
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
-               --------
-               |      |
-               |      O
-               |     \|
-               |      |
-               |
-            
-Progress: ?????
-Letters used: sfi
-Guess a letter -> b
-Things aren't looking so good, that guess was WRONG!
-Oh man, that crowd is getting happy, I thought you
-wanted to make them mad?
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: ?????
-Letters used: sfib
-Guess a letter -> p
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: ??p??
-Letters used: sfibp
-Guess a letter -> t
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: t?p??
-Letters used: sfibpt
-Guess a letter -> u
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: tup??
-Letters used: sfibptu
-Guess a letter -> l
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: tupl?
-Letters used: sfibptul
-Guess a letter -> e
-As it turns out, your guess was RIGHT!
-
-               --------
-               |      |
-               |      O
-               |      |
-               |      |
-               |
-            
-Progress: tuple
-Letters used: sfibptule
-Congratulations, you won! You've guessed the word correctly.
-Would you like to play again? (yes/no): no
-Goodbye!
+game = Hangman()
