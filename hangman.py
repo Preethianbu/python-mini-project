@@ -2,8 +2,9 @@ import random
 
 class Hangman:
     def __init__(self):
-        print("Welcome to 'Hangman', are you ready to play?")
-        print("(1) Yes, let's play!\n(2) No, get me outta here!")
+        name=input("What is your name?")
+        print("Welcome to 'Hangman' " +name, "are you ready to play?")
+        print("(1) Yes, for I am ready to die!\n(2) No, get me outta here!")
         user_choice_1 = input("-> ")
 
         if user_choice_1 == 'yes':
@@ -19,12 +20,17 @@ class Hangman:
     def start_game(self):
         print("A crowd begins to gather, they can't wait to see some real justice.")
         print("There's just one thing, you aren't a real criminal.")
+        
         print("No, no. You're the wrong time, wrong place type. You may think")
         print("you're doomed, but it's not like that at all.")
+        
         print("Yes, yes. You've got a chance to live. All you've gotta do")
         print("is guess the right word and you can live to see another day.")
+        
         print("But don't get too happy yet. If you make 6 wrong guesses,")
+        
         print("YOU'RE TOAST! VAMANOS!")
+        
         print("What is the data type in Python? ")
         self.core_game()
 
